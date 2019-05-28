@@ -22,13 +22,12 @@
       </form>
     </div>
     <div class="card">
-      <h2
-        class="deep-purple-text center"
-      >Rezervacije za voznju {{this.tripTitle}} id: {{this.reservationID}}</h2>
+      <h2 class="deep-purple-text center">Rezervacije za voznju {{this.tripTitle}}</h2>
       <ul class="reservations collection">
-        <li v-for="(comment, index) in comments" :key="index">
-          <div class="deep-purple-text">{{ comment.from }}</div>
-          <div class="grey-text text-darken-2">{{ comment.content }}</div>
+        <li v-for="(reservation, index) in reservations" :key="index">
+          <div class="deep-purple-text">Rezervirana mjesta: {{ reservation.seats }} <i class="material-icons delete" @click="deleteReservation(reservation)">delete</i></div>
+          <div class="deep-purple-text">Dogovorena cijena: {{ reservation.price }}</div>
+          <div class="grey-text text-darken-2">Opis: {{ reservation.description }}</div>
         </li>
       </ul>
     </div>
@@ -65,6 +64,19 @@ export default {
       .catch(err => {
         console.log("Error getting document in created lifecycle", err);
       });
+      db.collection('voznje')
+    .onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach(change => {
+        console.log(change ,"nesto")
+        if(change.type == 'added'){
+          console.log("na dobrom sam tragu")
+          /* this.comments.unshift({
+            from: change.doc.data().from,
+            content: change.doc.data().content
+          }) */
+        }
+      }) 
+    })
   },
   methods: {
     addNewReservation() {
@@ -119,6 +131,10 @@ export default {
       this.price = null;
       this.seats = null;
       this.description = null;
+    },
+    deleteReservation(reservation){
+      console.log(reservation)
+
     }
   }
 };
@@ -136,6 +152,14 @@ export default {
 .view-profile li {
   padding: 10px;
   border-bottom: 1px solid #eee;
+}
+.view-profile .delete {/* 
+  position: absolute; */
+  top: 4px;
+  right: 4px;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 1.4em;
 }
 </style>
 
