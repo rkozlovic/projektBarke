@@ -14,6 +14,11 @@
       <div class="field center">
         <button class="btn indigo darken-3">Login</button>
       </div>
+      <div class="col-md-4">
+        <div class="field center">
+          <input type="button" @click="resetPassword" value="Reset password" class="btn btn-primary w-100">
+        </div>
+        </div>
     </form>
   </div>
 </template>
@@ -31,6 +36,16 @@ export default {
     }
   },
   methods: {
+    resetPassword(){
+      var auth = firebase.auth();
+      var emailAddress = this.email;
+
+      auth.sendPasswordResetEmail(emailAddress).then(function() {
+        // Email sent.
+      }).catch(function(error) {
+        // An error happened.
+      });
+    },
     login(){
       if(this.email && this.password){
         this.feedback = null
