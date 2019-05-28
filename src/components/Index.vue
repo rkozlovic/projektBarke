@@ -1,5 +1,10 @@
 <template>
   <div class="index container">
+     <a href="" class="btn-floating btn-large halfway-fab blue">
+          <router-link :to="{ name: 'NovaVoznja' }">
+            <i class="material-icons">add</i>
+          </router-link>
+        </a>
     <div class="card" v-for="voznja in voznje" :key="voznja.id">
       <div class="card-content">
         <i class="material-icons delete" @click="izbrisiVoznju(voznja.id)">delete</i>
@@ -77,4 +82,5 @@ export default {
   color: #aaa;
   font-size: 1.4em;
 }
+
 </style>
