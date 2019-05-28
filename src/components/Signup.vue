@@ -64,7 +64,7 @@ export default {
                 });
               })
               .then(() => {
-                this.$router.push({ name: "Index" });
+                this.$router.push({ name: "Rides" });
               })
               .catch(err => {
                 this.feedback = err.message;

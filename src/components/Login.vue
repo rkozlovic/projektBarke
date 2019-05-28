@@ -37,7 +37,7 @@ export default {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
           //console.log(user)
-          this.$router.push({ name: 'Index' })
+          this.$router.push({ name: 'Rides' })
         }).catch(err => {
           this.feedback = err.message
         })

@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
+import Rides from '@/components/Rides'
 import Signup from '@/components/Signup'
 import Login from '@/components/Login'
-import NovaVoznja from '@/components/NovaVoznja'
+import NewRide from '@/components/NewRide'
+import Reservations from '@/components/Reservations'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -13,30 +14,38 @@ const router = new Router({
     {
       // voznje glavni
       path: '/',
-      name: 'Index',
-      component: Index,
+      name: 'Rides',
+      component: Rides,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/nova-voznja',
-      name: 'NovaVoznja',
-      component: NovaVoznja,
+      path: '/new-ride',
+      name: 'NewRide',
+      component: NewRide,
       meta: {
         requiresAuth: true
       }
     },
     {
       path: '/signup',
-      name: 'Signup',
+      name: 'Signup', 
       component: Signup
     },
     {
       path: '/login',
       name: 'Login',
       component: Login
-    }
+    },
+    {
+      path: '/reservations',
+      name: 'Reservations',
+      component: Reservations,
+      meta: {
+        requiresAuth: true
+      }
+    },
 
   ]
 })
