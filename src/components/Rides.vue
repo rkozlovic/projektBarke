@@ -6,7 +6,7 @@
       </router-link>
     </a>
     <div class="card" v-for="voznja in voznje" :key="voznja.id">
-      <div class="card-content" @click="openReservations">
+      <div class="card-content" @click="openReservations(voznja.title,voznja.id)">
         <i class="material-icons delete" @click="deleteRide(voznja.id)">delete</i>
           <h2 class="indigo-text">{{ voznja.title }}</h2>
         <h2 id="left">polazak: {{ getDepartueTime(voznja.datetime) }}</h2>
@@ -59,8 +59,8 @@ export default {
       var time = datetime.slice(-5);
       return time;
     },
-    openReservations(){
-      this.$router.push({ name: "Reservations" })
+    openReservations(title, id){
+      this.$router.push({ name: "Reservations", params: { title, id } })
     }
   },
   created() {

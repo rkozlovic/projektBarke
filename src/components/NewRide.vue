@@ -9,7 +9,7 @@
       </div>
       <div class="field title">
         <label>Datum i vrijeme:</label>
-        <input type="datetime-local" name="title" v-model="datetime">
+        <input type="datetime-local" name="date" v-model="datetime">
       </div>
       <div class="field title">
         <label for="boatCapacity">Kapacitet:</label>
@@ -74,7 +74,7 @@ export default {
             reservedSeats: 0
           })
           .then(() => {
-            this.$router.push({ name: "Index" });
+            this.$router.push({ name: "Rides" });
           })
           .catch(err => {
             console.log(err);
@@ -103,7 +103,7 @@ export default {
       this.boatCapacity = null;
       this.reservedSeats = null;
       this.duration = null;
-      this.$router.push({ name: "Index" });
+      this.$router.push({ name: "Rides" });
     }
   }
 };

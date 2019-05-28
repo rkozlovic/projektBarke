@@ -2,7 +2,7 @@
   <div class="navbar">
     <nav class="indigo darken-3">
       <div class="container">
-        <router-link :to="{ name: 'Index' }" class="brand-logo left">Barke</router-link>
+        <router-link :to="{ name: 'Rides' }" class="brand-logo left">Barke</router-link>
         <ul class="right">
           <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
           <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
