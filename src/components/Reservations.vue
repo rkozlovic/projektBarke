@@ -25,7 +25,8 @@
       <h2 class="deep-purple-text center">Rezervacije za voznju {{this.tripTitle}}</h2>
       <ul class="reservations collection">
         <li v-for="(reservation, index) in reservations" :key="index">
-          <div class="deep-purple-text">Rezervirana mjesta: {{ reservation.seats }} <i class="material-icons delete" @click="deleteReservation(reservation)">delete</i></div>
+          <i class="material-icons delete" @click="deleteReservation(reservation)">delete</i>
+          <div class="deep-purple-text">Rezervirana mjesta: {{ reservation.seats }}</div>
           <div class="deep-purple-text">Dogovorena cijena: {{ reservation.price }}</div>
           <div class="grey-text text-darken-2">Opis: {{ reservation.description }}</div>
         </li>
@@ -64,30 +65,27 @@ export default {
       .catch(err => {
         console.log("Error getting document in created lifecycle", err);
       });
-      db.collection('voznje')
+    /* db.collection('voznje')
     .onSnapshot((snapshot) => {
       snapshot.docChanges().forEach(change => {
-        console.log(change ,"nesto")
-        if(change.type == 'added'){
-          console.log("na dobrom sam tragu")
-          /* this.comments.unshift({
-            from: change.doc.data().from,
-            content: change.doc.data().content
-          }) */
+        if(change.type == 'added' || change.type == 'modified'){
+          console.log("na dobrom sam tragu",change.doc.data())
+      
+           this.reservations.unshift({
+            price: change.doc.data().reservations.price,
+            description: change.doc.data().reservations.description,
+            seats: change.doc.data().reservations.seats
+          }) 
         }
       }) 
-    })
+    }) */
   },
   methods: {
     addNewReservation() {
       let reservedSeats = 0;
       if (this.seats && this.price && this.description) {
         this.feedback = null;
-        this.reservations.push({
-          description: this.description,
-          seats: this.seats,
-          price: this.price
-        });
+
         db.collection("voznje")
           .doc(this.reservationID)
           .get()
@@ -102,6 +100,11 @@ export default {
 
             if (this.seats <= availableSeats) {
               let sum = reservedSeats + this.seats;
+              this.reservations.push({
+                description: this.description,
+                seats: this.seats,
+                price: this.price
+              });
               db.collection("voznje")
                 .doc(this.reservationID)
                 .set(
@@ -132,9 +135,71 @@ export default {
       this.seats = null;
       this.description = null;
     },
-    deleteReservation(reservation){
-      console.log(reservation)
+    deleteReservation(reservation) {
+      /* let array = [0, 2, 6, 7];
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        if (element == 3) {
+          array.splice(index, 1);
+          break;
+        }
+      }
+      console.log(array); */
+      let reservationsLocal = this.reservations;
+      let seats;
+      let newSeats;
+      for (let index = 0; index < reservationsLocal.length; index++) {
+        const element = reservationsLocal[index];
+        if (
+          reservation.description == element.description &&
+          reservation.price == element.price &&
+          reservation.seats == element.seats
+        ) {
+          seats = reservation.seats;
+          reservationsLocal.splice(index, 1);
+          break;
+        }
+      }
+      let actualReservedSeats;
+      db.collection("voznje")
+        .doc(this.reservationID)
+        .get()
+        .then(doc => {
+          console.log(doc.data());
+          if (doc.data().reservedSeats) {
+            actualReservedSeats = doc.data().reservedSeats;
+            console.log(doc.data().reservedSeats);
+            actualReservedSeats = parseInt(actualReservedSeats);
+            seats = parseInt(seats);
+            newSeats = actualReservedSeats - seats;
+            console.log(
+              typeof actualReservedSeats,
+              typeof seats,
+              typeof newSeats
+            );
+            console.log(actualReservedSeats, seats, newSeats);
+            console.log("reservationsLocal ", reservationsLocal);
 
+            db.collection("voznje")
+              .doc(this.reservationID)
+              .set(
+                {
+                  reservations: reservationsLocal,
+                  reservedSeats: newSeats
+                },
+                { merge: true }
+              )
+              .then(doc => {
+                console.log("successfully saved!");
+              })
+              .catch(err => {
+                console.log("Error getting document", err);
+              });
+          }
+        })
+        .catch(err => {
+          console.log("Error getting document in created lifecycle", err);
+        });
     }
   }
 };
@@ -153,7 +218,8 @@ export default {
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
-.view-profile .delete {/* 
+.view-profile .delete {
+  /* 
   position: absolute; */
   top: 4px;
   right: 4px;
@@ -162,4 +228,3 @@ export default {
   font-size: 1.4em;
 }
 </style>
-

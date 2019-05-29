@@ -8,7 +8,7 @@
     <div class="card" v-for="voznja in voznje" :key="voznja.id">
       <div class="card-content" @click="openReservations(voznja.title,voznja.id)">
         <i class="material-icons delete" @click="deleteRide(voznja.id)">delete</i>
-          <h2 class="indigo-text">{{ voznja.title }}</h2>
+        <h2 class="indigo-text">{{ voznja.title }}</h2>
         <h2 id="left">polazak: {{ getDepartueTime(voznja.datetime) }}</h2>
         <p>trajanje: {{ voznja.duration }}</p>
         <ul class="ingredients">
@@ -17,15 +17,17 @@
             <span class="green lighten-3 chip">{{ voznja.boatCapacity - voznja.reservedSeats}}</span>
           </li>
         </ul>
-        </div>
-        
-        <i class="small material-icons edit" @click="editRide(voznja.id)">edit</i>
-        <!-- <ul class="ingredients">
+      </div>
+
+      <i
+        class="small material-icons edit"
+        @click="editRide(voznja.title,voznja.id, voznja.datetime, voznja.boatCapacity, voznja.duration)"
+      >edit</i>
+      <!-- <ul class="ingredients">
            <li v-for="(rezervacija, index) in voznja.rezervacije" :key="index">
             <span class="chip">{{ vo}}</span>
           </li> 
-        </ul>-->
-      
+      </ul>-->
     </div>
   </div>
 </template>
@@ -55,12 +57,19 @@ export default {
           console.log(err);
         });
     },
+    editRide(title, id, datetime, capacity, duration) {
+      // delete doc from firestore
+      this.$router.push({
+        name: "EditRide",
+        params: { title, id, datetime, capacity, duration }
+      });
+    },
     getDepartueTime(datetime) {
       var time = datetime.slice(-5);
       return time;
     },
-    openReservations(title, id){
-      this.$router.push({ name: "Reservations", params: { title, id } })
+    openReservations(title, id) {
+      this.$router.push({ name: "Reservations", params: { title, id } });
     }
   },
   created() {

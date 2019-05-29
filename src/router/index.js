@@ -4,6 +4,7 @@ import Rides from '@/components/Rides'
 import Signup from '@/components/Signup'
 import Login from '@/components/Login'
 import NewRide from '@/components/NewRide'
+import EditRide from '@/components/EditRide'
 import Reservations from '@/components/Reservations'
 import firebase from 'firebase'
 
@@ -42,6 +43,14 @@ const router = new Router({
       path: '/reservations',
       name: 'Reservations',
       component: Reservations,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/edit-reservation',
+      name: 'EditRide',
+      component: EditRide,
       meta: {
         requiresAuth: true
       }
