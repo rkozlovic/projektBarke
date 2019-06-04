@@ -19,11 +19,11 @@
         <label for="duration">Trajanje:</label>
         <input type="text" name="duration" v-model="duration">
       </div>
-      <div v-for="(ing, index) in ingredients" class="field ingredient" :key="index">
+     <!--  <div v-for="(ing, index) in ingredients" class="field ingredient" :key="index">
         <label for="ingredient">Ingredient:</label>
         <input type="text" name="ingredient" v-model="ingredients[index]">
         <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
-      </div>
+      </div> -->
       <!-- <div class="field add-ingredient">
         <label for="add-ingredient">Add an ingredient (press tab to add):</label>
         <input type="text" name="add-ingredient" @keydown.tab.prevent="addIng" v-model="another">
